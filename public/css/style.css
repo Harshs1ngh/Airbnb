@@ -1,0 +1,106 @@
+
+.body{
+  font-family: "Ubuntu", sans-serif !important; 
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
+
+/* Navbar */
+
+.navbar{
+    height: 5rem;
+    background-color: white;
+}
+.fa-airbnb{
+    color: #da00bd;
+    font-size: 2rem;
+}
+.nav-link{
+    color: #222222  !important;
+} 
+
+
+
+/* footer */
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+.f-info-links , .f-info-socials{
+    width: 100%;
+}
+.f-info-socials i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    margin-left: 1.2rem;
+}
+.ft-info{
+    text-align: center;
+    height: 6rem;
+    background-color: lightgray;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-evenly;
+}
+
+/* Cards */
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+/* click effect */
+.card:hover .card-img-top{
+     transform: scale(1.009);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-body{
+    padding: 0 !important;
+}
+.card-text p {
+    font-weight: 400 !important;
+}
+
+.listing-text{
+    text-decoration: none;
+}
+
+/* new page */
+.add-btn{
+    background-color: rgb(255, 162, 0) !important;
+    border: none !important;
+}
+/* edit page */
+.edit-btn{
+    background-color: rgb(255, 162, 0) !important;
+    border: none !important;
+}
+/* show page */
+.show-img{
+    height: 30vh;
+}
+.btns{
+    display: flex;
+}
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
+}
