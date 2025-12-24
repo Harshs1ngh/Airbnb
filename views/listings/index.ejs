@@ -1,12 +1,172 @@
 <% layout("/layouts/boilerplate") %> 
 <body>
-    <h1>All listing </h1>
-    <!-- <form method="GET" action="/listings/new">
-      <button>create new</button>
-    </form> -->
+
+<style>
+ #filters {
+  display: flex;
+  align-items: center;
+  margin-top: 1.20rem;
+  overflow-x: auto;
+  gap: 3rem;
+  flex-wrap: nowrap;
+  padding: 0.20rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+#filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  text-align: center;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.filter .nav-link {
+  display: inline-flex;           
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.filter i {
+  font-size: 1.4rem;
+}
+
+.filter p {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  white-space: nowrap;
+}
+
+/* Hover */
+.filter:hover {
+  opacity: 1;
+}
+
+/* ACTIVE (selected category) */
+.filter.active {
+  opacity: 1;
+}
+
+.filter.active i,
+.filter.active p {
+  color: #E76F51;
+  font-weight: 600;
+}
+
+/* Desktop only */
+@media (min-width: 768px) {
+  #filters {
+    overflow-x: visible;
+    justify-content: space-start;
+  }
+}
+
+</style>
 
 
-    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-3">
+<div id="filters">
+  <div class="filter <%= !category ? 'active' : '' %>">
+    <a class="nav-link" href="/listings">
+      <div><i class="fa-solid fa-border-all"></i></div>
+      <p>Show all</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'trending' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=trending">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'rooms' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=rooms">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'iconiccities' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=iconiccities">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic cities</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'castels' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=castels">
+      <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castels</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'mountain' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=mountain">
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountain</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'pools' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=pools">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Pools</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'camping' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=camping">
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'farms' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=farms">
+      <div><i class="fa-solid fa-tractor"></i></div>
+      <p>Farms</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'arctic' ? 'active' : '' %>">
+    <a class="nav-link" href="/listings?category=arctic">
+      <div><i class="fa-solid fa-snowman"></i></div>
+      <p>Arctic</p>
+    </a>
+  </div>
+
+  <div class="filter <%= category === 'boat' ? 'active' : '' %>">
+  <a class="nav-link" href="/listings?category=boat">
+    <div><i class="fa-solid fa-ship"></i></div>
+    <p>Boat</p>
+  </a>
+</div>
+
+<div class="price-sort-wrapper">
+  <% if (sort === "price_asc") { %>
+    <a href="/listings?<%= category ? `category=${category}&` : '' %>sort=price_desc"
+       class="price-sort-btn">
+      Price ↓
+    </a>
+  <% } else { %>
+    <a href="/listings?<%= category ? `category=${category}&` : '' %>sort=price_asc"
+       class="price-sort-btn">
+      Price ↑
+    </a>
+  <% } %>
+</div>
+
+
+</div>
+
+
+
+    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
       <%  for(let listing of allListings ){ %>
         <a href="/listings/<%= listing._id %>" class="listing-text">
           <div class="card col listing-card">

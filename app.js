@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production"){
+    require('dotenv').config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -6,6 +10,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js"); 
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -15,18 +20,18 @@ const userRouter = require("./routes/user.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
+const dbUrl = process.env.ATLASDB_URL;
 
 main()
 .then(() =>{
     console.log("connected to DB");
 })
 .catch((err) => { 
-    console.log(err); 
+    console.log(err);
 });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 }
 
 app.set("view engine","ejs");
@@ -36,10 +41,24 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto:{
+        secret: process.env.SECRET
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) =>{
+    console.log("ERROR in MONGO SESSION STORE", err);
+});
+
 const sessionOptions = {
-    secret: "mysupersecretcode",
+    store,
+    secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -48,9 +67,11 @@ const sessionOptions = {
 };
 
 
-app.get("/" , (req,res) => {
-    res.send("hi i am a user");
-});
+// app.get("/" , (req,res) => {
+//     res.send("hi i am a user");
+// });
+
+
 
 app.use(session(sessionOptions));
 app.use(flash()); 
@@ -85,16 +106,11 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/",userRouter);
 
 app.use((req,res,next)=>{
-    next(new ExpressError(404 , "Page Not Found!"));
+    next(new ExpressError(404, "Page Not Found!"));
 });
 
 app.use((err, req, res, next) => {
-    console.log("🔥🔥🔥 FULL ERROR OBJECT BELOW 🔥🔥🔥");
-    console.log(err);          // show error
-    console.log(err.message);  // show message
-    console.log(err.stack);    // show stack trace
-
-    const status = err.statusCode || 500;
+    const status = err.status || 500;
     res.status(status).send(`
         <h1>SERVER ERROR</h1>
         <pre>${err.message}</pre>

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const review = require("./review.js");
+const { string } = require("joi");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -8,7 +9,7 @@ const listingSchema = new Schema({
         required: true,
     },
     description: String,
-    image: { 
+    image: {  
   type: mongoose.Schema.Types.Mixed,
   default: {
     filename: "listingimage",
@@ -17,6 +18,10 @@ const listingSchema = new Schema({
 },
     price: Number,
     location: String,
+    geometry: {      
+        lat: Number,
+        lng: Number
+    },
     country: String,
     reviews: [
       {
@@ -24,6 +29,16 @@ const listingSchema = new Schema({
         ref: "Review",
       },
     ],
+    owner:
+{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      category: {
+  type: [String],
+  enum: ["trending", "rooms", "iconiccities", "castels", "mountain", "pools", "camping", "farms", "arctic", "boat"],
+  required: true
+},
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
@@ -32,5 +47,5 @@ listingSchema.post("findOneAndDelete", async (listing) => {
   }
 });
 
-const listing = mongoose.model("listing", listingSchema);
-module.exports = listing;
+const Listing = mongoose.model("Listing", listingSchema);
+module.exports = Listing;
