@@ -1,4 +1,4 @@
-const Listing = require("./models/Listing.js");
+const Listing = require("./models/Listing");
 const Review = require("./models/review.js");
 const { listingSchema,reviewSchema } = require("./schema.js");
 const ExpressError = require("./utils/ExpressError.js");
@@ -31,7 +31,6 @@ module.exports.isOwner = async (req,res, next) => {
 
 module.exports.validateListing = (req, res, next) => {
 
-    // ✅ FIX: normalize image BEFORE Joi runs
     if (
         req.body?.listing?.image === "" ||
         typeof req.body?.listing?.image === "string"
@@ -60,7 +59,7 @@ module.exports.validateReview = (req,res,next) =>{
 };
  
 module.exports.isReviewAuthor = async (req, res, next) => {
-    let { id, reviewId } = req.params;   // ✅ FIX 1: correct param name
+    let { id, reviewId } = req.params;  
     let review = await Review.findById(reviewId);
     if (!review) {
         req.flash("error", "Review not found");

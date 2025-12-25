@@ -12,7 +12,7 @@ module.exports.index =  async (req, res) => {
 
   let query = Listing.find(filter);
 
-  // ✅ PRICE SORT ONLY
+  // PRICE SORT
   if (sort === "price_asc") {
     query = query.sort({ price: 1 });
   } else if (sort === "price_desc") {
