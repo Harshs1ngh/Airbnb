@@ -1,8 +1,5 @@
 const Listing = require("../models/Listing");
 
-
-
-
 module.exports.index =  async (req, res) => {
   const { category, sort } = req.query;
 
