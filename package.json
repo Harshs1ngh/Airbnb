@@ -3,9 +3,9 @@
     "node": "v20.19.6"
   },
   "scripts": {
-  "start": "node app.js",
-  "dev": "nodemon app.js"
-},
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
