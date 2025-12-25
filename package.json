@@ -3,7 +3,7 @@
     "node": "v20.19.6"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node src/app.js",
     "dev": "nodemon app.js"
   },
   "dependencies": {
